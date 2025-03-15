@@ -1,3 +1,32 @@
+import tensorflow as tf
+from tensorflow import keras
+import numpy as np
+import streamlit as st
+
+# Generate sample data for gravitational wave detection
+def generate_gw_data(size=1000):
+    x = np.linspace(0, 2 * np.pi, size)
+    y = np.sin(x) + np.random.normal(scale=0.1, size=size)  # GW signal with noise
+    return x, y
+
+# Create a simple TensorFlow model
+def create_gw_model():
+    model = keras.Sequential([
+        keras.layers.Dense(64, activation="relu", input_shape=(1,)),
+        keras.layers.Dense(64, activation="relu"),
+        keras.layers.Dense(1)
+    ])
+    model.compile(optimizer="adam", loss="mse")
+    return model
+
+# Train the model
+x_train, y_train = generate_gw_data()
+model = create_gw_model()
+model.fit(x_train.reshape(-1, 1), y_train, epochs=20, verbose=0)
+
+# Predict future gravitational wave anomalies
+x_future = np.linspace(2 * np.pi, 4 * np.pi, 200)
+y_future_pred = model.predict(x_future.reshape(-1, 1))
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
